@@ -75,13 +75,15 @@ struct SettingsView: View {
             Form {
                 Section {
                     TextField("", text: $viewModel.appleID)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                         .disabled(viewModel.isLoginInProgress)
                 } header: {
                     Text("Apple ID")
                 }
                 Section {
-                    TextField("", text: $viewModel.password)
-                        .textContentType(.password)
+                    SecureField("", text: $viewModel.password)
                         .disabled(viewModel.isLoginInProgress)
                 } header: {
                     Text("Password")
@@ -97,6 +99,13 @@ struct SettingsView: View {
                     Button("Continue") {
                         Task{ await loginButtonClicked() }
                     }
+                }
+                
+                Section {
+                    Text(viewModel.logs)
+                        .font(.system(.subheadline, design: .monospaced))
+                } header: {
+                    Text("Debugging")
                 }
             }
             .navigationTitle("Sign in")

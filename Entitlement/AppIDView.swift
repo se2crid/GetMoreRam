@@ -37,6 +37,7 @@ struct AppIDEditView : View {
                 Text(errorInfo)
             }
             .navigationTitle(viewModel.bundleID)
+            .navigationBarTitleDisplayMode(.inline)
             
         }
         .navigationViewStyle(StackNavigationViewStyle())

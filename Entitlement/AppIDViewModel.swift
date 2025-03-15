@@ -56,7 +56,7 @@ class AppIDModel : ObservableObject, Hashable {
         request.allHTTPHeaderFields = httpHeaders
         request.httpBody = "{\"data\":{\"relationships\":{\"bundleIdCapabilities\":{\"data\":[{\"relationships\":{\"capability\":{\"data\":{\"id\":\"INCREASED_MEMORY_LIMIT\",\"type\":\"capabilities\"}}},\"type\":\"bundleIdCapabilities\",\"attributes\":{\"settings\":[],\"enabled\":true}}]}},\"id\":\"\(appID.identifier)\",\"attributes\":{\"hasExclusiveManagedCapabilities\":false,\"teamId\":\"\(team.identifier)\",\"bundleType\":\"bundle\",\"identifier\":\"\(appID.bundleIdentifier)\",\"seedId\":\"\(team.identifier)\",\"name\":\"\(appID.name)\"},\"type\":\"bundleIds\"}}".data(using: .utf8)
         
-        let (data, response) = try await URLSession.shared.asyncRequest(request: request)
+        let (data, _) = try await URLSession.shared.asyncRequest(request: request)
         
         await MainActor.run {
             result = String(data: data!, encoding: .utf8) ?? "Unable to decode response."
@@ -79,7 +79,11 @@ class AppIDViewModel : ObservableObject {
                 if let error = appIDs as? Error {
                     c.resume(throwing: error)
                 }
-                c.resume(returning: appIDs!)
+                guard let appIDs else {
+                    c.resume(throwing: "AppIDs is nil, please try again or reopen the app.")
+                    return
+                }
+                c.resume(returning: appIDs)
             }
         }
         await MainActor.run {

@@ -33,12 +33,9 @@ final class AnisetteDataHelper: WebSocketDelegate
     
     static var shared: AnisetteDataHelper = AnisetteDataHelper()
     
-    var cache: ALTAnisetteData?
+    var loggingFunc: ((String)->Void)?
     func getAnisetteData(refresh: Bool = false) async throws -> ALTAnisetteData
     {
-        if let cache, !refresh {
-            return cache
-        }
         
         if url == nil {
             throw "No Anisette Server Found!"
@@ -53,7 +50,6 @@ final class AnisetteDataHelper: WebSocketDelegate
         } else {
             ans = try await self.provision()
         }
-        cache = ans
         return ans
     }
     
@@ -276,6 +272,9 @@ final class AnisetteDataHelper: WebSocketDelegate
         case .disconnected(let string, let code):
             self.printOut("Disconnected: \(code); \(string)")
             
+        case .peerClosed:
+            self.printOut("PeerClosed")
+            
         case .error(let error):
             self.printOut("Got error: \(String(describing: error))")
             
@@ -388,7 +387,12 @@ final class AnisetteDataHelper: WebSocketDelegate
         let isInternalLoggingEnabled = true
         if(isInternalLoggingEnabled){
             // logging enabled, so log it
-            text.map{ _ in print(text!) } ?? print()
+            if let loggingFunc {
+                loggingFunc(text ?? "\n")
+            } else {
+                text.map{ _ in print(text!) } ?? print()
+            }
+
         }
     }
 }

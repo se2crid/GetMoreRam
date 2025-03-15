@@ -15,6 +15,8 @@ class LoginViewModel: ObservableObject {
     @Published var verificationCode = ""
     @Published var loginModalShow = false
     @Published var isLoginInProgress = false
+    @Published var logs = ""
+    
     private var verificationCodeHandler: ((String?) -> Void)?
     
     func submitVerficationCode() {
@@ -29,7 +31,14 @@ class LoginViewModel: ObservableObject {
         }
         
         await MainActor.run {
+            logs = ""
             isLoginInProgress = true
+        }
+        
+        AnisetteDataHelper.shared.loggingFunc = { text in
+            Task { await MainActor.run {
+                self.logs.append("\(text)\n")
+            }}
         }
 
         defer {
