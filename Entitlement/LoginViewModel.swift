@@ -35,11 +35,13 @@ class LoginViewModel: ObservableObject {
             isLoginInProgress = true
         }
         
-        AnisetteDataHelper.shared.loggingFunc = { text in
+        func logging(text: String) {
             Task { await MainActor.run {
                 self.logs.append("\(text)\n")
             }}
         }
+        
+        AnisetteDataHelper.shared.loggingFunc = logging
 
         defer {
             Task{ await MainActor.run {
@@ -64,10 +66,14 @@ class LoginViewModel: ObservableObject {
                     c.resume(throwing: error)
                     return
                 }
-                
-                c.resume(returning: (account!, session!))
+                if let account, let session {
+                    c.resume(returning: (account, session))
+                } else {
+                    c.resume(throwing: "Account or session is nil. Please try again or reopen the app.")
+                }
             }
         }
+        logging(text: "Successfully signed in")
         
         DataManager.shared.model.account = account
         DataManager.shared.model.session = session
@@ -75,6 +81,7 @@ class LoginViewModel: ObservableObject {
         Keychain.shared.appleIDPassword = self.password
         
         let team = try await fetchTeam(for: account, session: session)
+        logging(text: "Successfully fetched team")
         DataManager.shared.model.team = team
         
         Task{ await MainActor.run {

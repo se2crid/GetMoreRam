@@ -56,6 +56,8 @@ struct SettingsView: View {
                 Button("Clean Up Keychain") {
                     cleanUp()
                 }
+            } footer: {
+                Text("If something went wrong during signing in, please try to clean up the keychain, repoen the app and try again.")
             }
         }
         .alert("Error", isPresented: $errorShow){

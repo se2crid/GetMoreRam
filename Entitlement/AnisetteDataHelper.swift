@@ -139,8 +139,8 @@ final class AnisetteDataHelper: WebSocketDelegate
             self.printOut("Getting provisioning URLs")
             var request = self.buildAppleRequest(url: URL(string: "https://gsa.apple.com/grandslam/GsService2/lookup")!)
             request.httpMethod = "GET"
-        let (data, response) = try await URLSession.shared.asyncRequest(request: request)
-        if let data = data,
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if
            let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? Dictionary<String, Dictionary<String, Any>>,
            let startProvisioningString = plist["urls"]?["midStartProvisioning"] as? String,
            let startProvisioningURL = URL(string: startProvisioningString),
@@ -153,7 +153,7 @@ final class AnisetteDataHelper: WebSocketDelegate
             self.printOut("Starting a provisioning session")
             return try await self.startProvisioningSession()
         } else {
-            self.printOut("Apple didn't give valid URLs! Got response: \(String(data: data ?? Data("nothing".utf8), encoding: .utf8) ?? "not utf8")")
+            self.printOut("Apple didn't give valid URLs! Got response: \(String(data: data, encoding: .utf8) ?? "not utf8")")
             throw "Apple didn't give valid URLs. Please try again later"
         }
 
@@ -319,13 +319,10 @@ final class AnisetteDataHelper: WebSocketDelegate
         self.printOut("Trying to get client_info")
         let clientInfoURL = self.url!.appendingPathComponent("v3").appendingPathComponent("client_info")
         
-        let (data, response) = try await URLSession.shared.asyncRequest(url: clientInfoURL)
+        let (data, response) = try await URLSession.shared.data(from: clientInfoURL)
         
 
             do {
-                guard let data = data else {
-                    throw "Couldn't fetch client info. The server may be down"
-                }
                 
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
                     if let clientInfo = json["client_info"] {
@@ -374,9 +371,7 @@ final class AnisetteDataHelper: WebSocketDelegate
             "adi_pb": adiPb
         ], options: [])
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let (data, response) = try await URLSession.shared.asyncRequest(request: request)
-
-        guard let data else { throw "Couldn't fetch anisette" }
+        let (data, response) = try await URLSession.shared.data(for: request)
         
         return try await self.extractAnisetteData(data, response as? HTTPURLResponse, v3: true)
 

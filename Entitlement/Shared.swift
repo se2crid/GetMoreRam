@@ -80,32 +80,6 @@ extension String: @retroactive LocalizedError {
     
 }
 
-extension URLSession {
-    public func asyncRequest(url: URL) async throws -> (Data?, URLResponse?) {
-        return try await asyncRequest(request: URLRequest(url: url))
-    }
-    
-    public func asyncRequest(request: URLRequest) async throws -> (Data?, URLResponse?) {
-        var ansData: Data?
-        var ansResponse: URLResponse?
-        var ansError: Error?
-        await withCheckedContinuation { c in
-            let task = self.dataTask(with: request) { data, response, error in
-                ansError = error
-                ansResponse = response
-                ansData = data
-                c.resume()
-            }
-            task.resume()
-        }
-        if let ansError {
-            throw ansError
-        }
-        return (ansData, ansResponse)
-    }
-}
-
-
 class SharedModel: ObservableObject {
     @Published var isLogin = false
     @AppStorage("AnisetteServer") var anisetteServerURL = "https://ani.sidestore.io"

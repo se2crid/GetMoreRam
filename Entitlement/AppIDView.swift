@@ -13,40 +13,35 @@ struct AppIDEditView : View {
     @State private var errorInfo = ""
     
     var body: some View {
-        NavigationView {
-            Form {
-                Section {
-                    Button {
-                        Task { await addIncreasedMemoryLimit() }
-                    } label: {
-                        Text("Add Increased Memory Limit")
-                    }
-                }
-                
-                Section {
-                    Text(viewModel.result)
-                        .font(.system(.subheadline, design: .monospaced))
-                } header: {
-                    Text("Server Response")
+        Form {
+            Section {
+                Button {
+                    Task { await addIncreasedMemoryLimit() }
+                } label: {
+                    Text("Add Increased Memory Limit")
                 }
             }
-            .alert("Error", isPresented: $errorShow){
-                Button("OK".loc, action: {
-                })
-            } message: {
-                Text(errorInfo)
-            }
-            .navigationTitle(viewModel.bundleID)
-            .navigationBarTitleDisplayMode(.inline)
             
+            Section {
+                Text(viewModel.result)
+                    .font(.system(.subheadline, design: .monospaced))
+            } header: {
+                Text("Server Response")
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .alert("Error", isPresented: $errorShow){
+            Button("OK".loc, action: {
+            })
+        } message: {
+            Text(errorInfo)
+        }
+        .navigationTitle(viewModel.bundleID)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     func addIncreasedMemoryLimit() async {
         do {
             try await viewModel.addIncreasedMemory()
-            print("completed")
         } catch {
             errorInfo = error.localizedDescription
             errorShow = true

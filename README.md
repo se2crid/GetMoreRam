@@ -1,9 +1,9 @@
 # Get More Ram
-A simple AltSign wrapper that allows you to enable "Increased Memory Limit" to your sideloaded apps without using Xcode
+A simple AltSign wrapper app that allows you to enable "Increased Memory Limit" for your sideloaded apps without using Xcode.
 
 # How to use
 1. Sideload this app
-2. Go to settings, sign in your account
+2. Go to settings, sign in your account that you used to sign the app you want to enable "Increased Memory Limit"
 3. Go to "App IDs" page
 4. Tap Refresh
 5. Tap the app you want to enable "Increased Memory Limit"
