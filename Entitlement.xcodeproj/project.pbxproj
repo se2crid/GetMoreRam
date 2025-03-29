@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		17EE68B02D848EA100B77523 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 17EE68AF2D848EA100B77523 /* Starscream */; };
 		17EE68B32D848EF000B77523 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 17EE68B22D848EF000B77523 /* KeychainAccess */; };
-		4E5D22A62D95190700FCF016 /* StosSign in Frameworks */ = {isa = PBXBuildFile; productRef = 4E5D22A52D95190700FCF016 /* StosSign */; };
+		4EE1A6092D954CE9007D655E /* StosSign in Frameworks */ = {isa = PBXBuildFile; productRef = 4EE1A6082D954CE9007D655E /* StosSign */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E5D22A62D95190700FCF016 /* StosSign in Frameworks */,
+				4EE1A6092D954CE9007D655E /* StosSign in Frameworks */,
 				17EE68B32D848EF000B77523 /* KeychainAccess in Frameworks */,
 				17EE68B02D848EA100B77523 /* Starscream in Frameworks */,
 			);
@@ -99,7 +99,7 @@
 			packageProductDependencies = (
 				17EE68AF2D848EA100B77523 /* Starscream */,
 				17EE68B22D848EF000B77523 /* KeychainAccess */,
-				4E5D22A52D95190700FCF016 /* StosSign */,
+				4EE1A6082D954CE9007D655E /* StosSign */,
 			);
 			productName = Entitlement;
 			productReference = 173496F02D847E82007994DB /* Entitlement.app */;
@@ -132,7 +132,7 @@
 			packageReferences = (
 				17EE68AE2D848EA100B77523 /* XCRemoteSwiftPackageReference "Starscream" */,
 				17EE68B12D848EF000B77523 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				4E5D22A42D95190700FCF016 /* XCRemoteSwiftPackageReference "StosSign" */,
+				4EE1A6072D954CE9007D655E /* XCRemoteSwiftPackageReference "StosSign" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 173496F12D847E82007994DB /* Products */;
@@ -388,12 +388,12 @@
 				kind = branch;
 			};
 		};
-		4E5D22A42D95190700FCF016 /* XCRemoteSwiftPackageReference "StosSign" */ = {
+		4EE1A6072D954CE9007D655E /* XCRemoteSwiftPackageReference "StosSign" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stossy11/StosSign.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = revision;
+				revision = 70a80bdd2b570020e917ec4a6fb79a8cf4ba1100;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -409,9 +409,9 @@
 			package = 17EE68B12D848EF000B77523 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
 		};
-		4E5D22A52D95190700FCF016 /* StosSign */ = {
+		4EE1A6082D954CE9007D655E /* StosSign */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E5D22A42D95190700FCF016 /* XCRemoteSwiftPackageReference "StosSign" */;
+			package = 4EE1A6072D954CE9007D655E /* XCRemoteSwiftPackageReference "StosSign" */;
 			productName = StosSign;
 		};
 /* End XCSwiftPackageProductDependency section */
