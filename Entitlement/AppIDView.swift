@@ -7,7 +7,8 @@
 import SwiftUI
 
 struct AppIDEditView : View {
-    @StateObject var viewModel : AppIDModel
+    @StateObject var viewModel: AppIDModel
+    @State private var selectedEntitlement = Entitlement.increasedMemory
     
     @State private var errorShow = false
     @State private var errorInfo = ""
@@ -15,10 +16,16 @@ struct AppIDEditView : View {
     var body: some View {
         Form {
             Section {
+                Picker("Entitlement", selection: $selectedEntitlement) {
+                    ForEach(Entitlement.allCases, id: \.self) { entitlement in
+                        Text(entitlement.displayName).tag(entitlement)
+                    }
+                }
+                
                 Button {
-                    Task { await addIncreasedMemoryLimit() }
+                    Task { await addEntitlement() }
                 } label: {
-                    Text("Add Increased Memory Limit")
+                    Text("Add Entitlement")
                 }
             }
             
@@ -39,14 +46,13 @@ struct AppIDEditView : View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    func addIncreasedMemoryLimit() async {
+    func addEntitlement() async {
         do {
-            try await viewModel.addIncreasedMemory()
+            try await viewModel.addEntitlement(selectedEntitlement)
         } catch {
             errorInfo = error.localizedDescription
             errorShow = true
         }
-
     }
 }
 
